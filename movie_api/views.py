@@ -2,9 +2,12 @@ from django.db.models import Count
 from django.db.models.expressions import F, Window
 from django.db.models.functions.window import DenseRank
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework import status
 
 from .models import Comment, Movie
 from .serializers import CommentSerializer, MovieSerializer, TopSerializer
+from .utils import get_movie
 
 
 class MovieViewset(ModelViewSet):
