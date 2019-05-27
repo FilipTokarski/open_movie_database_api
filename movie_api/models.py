@@ -10,8 +10,8 @@ class Movie(models.Model):
     Runtime = models.CharField(max_length=120)
     Genre = models.CharField(max_length=120)
     Director = models.CharField(max_length=120)
-    Writer = models.CharField(max_length=120) # 250
-    Actors = models.CharField(max_length=120) # 250
+    Writer = models.CharField(max_length=120)
+    Actors = models.CharField(max_length=120)
     Plot = models.TextField()
     Language = models.CharField(max_length=120)
     Country = models.CharField(max_length=120)

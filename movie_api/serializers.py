@@ -18,6 +18,9 @@ class MovieSerializer(serializers.ModelSerializer):
                             'Production', 'Website', 'Response')
 
     def create(self, validated_data):
+        # overrites default behaviour
+        # creates movie model based on provided title
+        # and data fetched from omdb api
         title = validated_data['Title']
         full_data = get_movie(title)
         movie = Movie.objects.create(**full_data)
