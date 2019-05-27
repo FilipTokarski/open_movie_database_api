@@ -7,7 +7,6 @@ from rest_framework import status
 
 from .models import Comment, Movie
 from .serializers import CommentSerializer, MovieSerializer, TopSerializer
-from .utils import get_movie
 
 
 class MovieViewset(ModelViewSet):
