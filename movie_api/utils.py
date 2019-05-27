@@ -7,5 +7,5 @@ def get_movie(title):
         data = request.json()
     except:
         data = {"Title": "Sorry, there has been an error"}
-        
+
     return data
