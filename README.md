@@ -1,7 +1,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/FilipTokarski/open_movie_database_api/badge.svg?branch=master)](https://coveralls.io/github/FilipTokarski/open_movie_database_api?branch=master)
 # Open Movie Database api with Django REST Framework  
 
-### Visit website here: https://ftdev.pl  
 
 This project utilizes Django, Django Rest Framework and Open Movie Database API.  
 It has three endpoints:
