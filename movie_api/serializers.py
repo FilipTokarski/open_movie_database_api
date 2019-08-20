@@ -1,15 +1,17 @@
 from rest_framework import serializers
 from rest_framework.response import Response
+from rest_framework.validators import UniqueTogetherValidator
 
 from .models import Comment, Movie
 from .utils import get_movie
 
 
 class MovieSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(max_length=255, source='Title')
 
     class Meta:
         model = Movie
-        fields = '__all__'
+        exclude = ('Title',)
         read_only_fields = ('id', 'Year', 'Rated', 'Released', 'Runtime', 
                             'Genre', 'Director', 'Writer', 'Actors', 'Plot',
                             'Language', 'Country', 'Awards', 'Poster',
@@ -18,14 +20,17 @@ class MovieSerializer(serializers.ModelSerializer):
                             'Production', 'Website', 'Response')
 
     def create(self, validated_data):
-        # overrites default behaviour
-        # creates movie model based on provided title
-        # and data fetched from omdb api
+        '''creates movie model based on provided title 
+            and data fetched from omdb api'''
         title = validated_data['Title']
         full_data = get_movie(title)
-        movie = Movie.objects.create(**full_data)
-        return movie
-
+        try:
+            return Movie.objects.get(Title=full_data['Title'])
+        except Movie.DoesNotExist:
+            return Movie.objects.create(**full_data)
+        except KeyError:
+            message = {'Error' : 'Movie not found. Please provide a valid title'}
+            raise serializers.ValidationError(message)
 
 class CommentSerializer(serializers.ModelSerializer):
 

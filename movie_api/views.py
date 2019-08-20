@@ -1,20 +1,18 @@
 from django.db.models import Count
 from django.db.models.expressions import F, Window
 from django.db.models.functions.window import DenseRank
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.generics import ListAPIView, ListCreateAPIView
 
 from .models import Comment, Movie
 from .serializers import CommentSerializer, MovieSerializer, TopSerializer
 
 
-class MovieViewset(ModelViewSet):
+class MovieViewset(ListCreateAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
 
-class CommentViewset(ModelViewSet):
+class CommentViewset(ListCreateAPIView):
     serializer_class = CommentSerializer
 
     def get_queryset(self):
@@ -30,7 +28,7 @@ class CommentViewset(ModelViewSet):
         return queryset
 
 
-class TopViewset(ModelViewSet):
+class TopViewset(ListAPIView):
     serializer_class = TopSerializer
 
     def get_queryset(self):
@@ -38,6 +36,9 @@ class TopViewset(ModelViewSet):
         queryset = Movie.objects.all()
         dense_rank = Window(expression=DenseRank(),
                             order_by=F('total_comments').desc())
+        queryset = queryset.annotate(total_comments=Count('comments'))\
+                           .order_by('-total_comments')\
+                           .annotate(rank=dense_rank)
 
         # filter by date
         if self.request.query_params:
@@ -46,15 +47,6 @@ class TopViewset(ModelViewSet):
             filtered_query = queryset.filter(
                                     comments__date_added__gte = date_start,
                                     comments__date_added__lte = date_end)
-                                    
-            # create 'total_comments' and calculated 'rank' fields
-            queryset = filtered_query\
-                                .annotate(total_comments=Count('comments'))\
-                                .order_by('-total_comments')\
-                                .annotate(rank=dense_rank)
-            return queryset
-
-        queryset = queryset.annotate(total_comments=Count('comments'))\
-                           .order_by('-total_comments')\
-                           .annotate(rank=dense_rank)
+            return filtered_query
+        
         return queryset
