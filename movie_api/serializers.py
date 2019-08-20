@@ -32,6 +32,7 @@ class MovieSerializer(serializers.ModelSerializer):
             message = {'Error' : 'Movie not found. Please provide a valid title'}
             raise serializers.ValidationError(message)
 
+
 class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
