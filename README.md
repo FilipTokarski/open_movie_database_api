@@ -1,7 +1,6 @@
 [![Coverage Status](https://coveralls.io/repos/github/FilipTokarski/open_movie_database_api/badge.svg?branch=master)](https://coveralls.io/github/FilipTokarski/open_movie_database_api?branch=master)
 # Open Movie Database api with Django REST Framework  
 
-### Visit website here: https://ftdev.pl  
 
 This project utilizes Django, Django Rest Framework and Open Movie Database API.  
 It has three endpoints:
@@ -14,7 +13,7 @@ It has three endpoints:
 Get request reutrns list of all movies present in the database  
 Post request requires a title:  
 >{  
->   "Title": "Some movie title"  
+>   "title": "Some movie title"  
 >}  
 
 It returns an object fetched from Omdb API and saves it to database.
